@@ -1,0 +1,99 @@
+<div class="login-container">
+
+    <div class="background-circle circle1"></div>
+    <div class="background-circle circle2"></div>
+
+    <div class="login-wrapper">
+
+        <div class="brand-section">
+            <div class="logo-card">
+                <img src="assets/logo/joboy-logo.png" alt="Joboy">
+            </div>
+
+            <h1>Admin Console</h1>
+
+            <p class="subtitle">
+                PLATFORM SERVICE BOOKING ADMINISTRATION
+            </p>
+        </div>
+
+        <div class="login-card">
+
+            @if(error){
+
+            <div class="error-box">
+                {{ error }}
+            </div>
+
+            }
+
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+                <div class="form-group">
+
+                    <label>ADMIN ACCOUNT</label>
+
+                    <input type="text" formControlName="username" placeholder="george.jacob@serville.in">
+
+                </div>
+
+                <div class="form-group">
+
+                    <div class="password-header">
+                        <label>SECURITY PASSWORD</label>
+
+                        <span class="forgot-link" (click)="openForgot()">
+                            Forgot Password?
+                        </span>
+                    </div>
+
+                    <div class="password-box">
+
+                        <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                            placeholder="Password">
+
+                        <button type="button" class="eye-btn" (click)="togglePassword()">
+
+                            <span class="material-icons">
+                                {{ showPassword ? 'visibility_off' : 'visibility' }}
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <button class="login-btn" type="submit" [disabled]="loading">
+
+                    {{
+                    loading ?
+                    'Authenticating Staff...' :
+                    'Sign In as System Admin'
+                    }}
+
+                </button>
+
+            </form>
+
+            <div class="divider"></div>
+
+            <p class="sandbox-text">
+                Sandbox Preview quick access:
+            </p>
+
+            <button class="autofill-btn" (click)="autofill()">
+
+                One-Click Autofill Credentials
+
+            </button>
+
+        </div>
+
+        <p class="footer-text">
+            Joboy Home Services Tech Admin Platform · Secure AES-256 Vault
+        </p>
+
+    </div>
+
+</div>

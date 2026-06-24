@@ -1,0 +1,176 @@
+<div class="min-h-screen bg-slate-100 p-6">
+
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
+
+        <div *ngFor="let stat of stats" class="bg-white rounded-3xl p-6 shadow-sm">
+
+            <h4 class="text-sm font-semibold text-slate-500 uppercase">
+                {{ stat.title }}
+            </h4>
+
+            <div class="text-5xl font-bold mt-5" [style.color]="stat.color">
+                {{ stat.value }}
+            </div>
+
+            <span class="inline-block mt-4 px-4 py-2 rounded-full text-sm font-semibold bg-slate-100 text-slate-600">
+                {{ stat.badge }}
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- Chart + Logs -->
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
+
+        <!-- Chart -->
+        <div class="xl:col-span-2 bg-white rounded-3xl p-6 shadow-sm">
+
+            <div class="flex items-center justify-between mb-5">
+                <h3 class="text-xl font-semibold text-slate-800">
+                    Dispatch Fulfillment & SLA Performance
+                </h3>
+            </div>
+
+            <div class="h-[350px]">
+                <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="'line'">
+                </canvas>
+            </div>
+
+        </div>
+
+        <!-- Logs -->
+        <div class="bg-white rounded-3xl p-6 shadow-sm">
+
+            <h3 class="text-xl font-semibold text-slate-800 mb-6">
+                Real-time Dispatch Log
+            </h3>
+
+            <div *ngFor="let log of dispatchLogs" class="border-b border-slate-100 py-4">
+
+                <h4 class="font-semibold text-slate-800">
+                    {{ log.title }}
+                </h4>
+
+                <small class="text-slate-500">
+                    {{ log.user }}
+                </small>
+
+                <p class="text-sm text-slate-600 mt-2">
+                    {{ log.message }}
+                </p>
+
+            </div>
+
+            <button class="mt-5 text-blue-600 font-semibold hover:text-blue-700">
+                View Complete Operations Log
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Queue Table -->
+    <div class="bg-white rounded-3xl shadow-sm p-6 overflow-x-auto">
+
+        <!-- Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+
+            <h3 class="text-xl font-semibold text-slate-800">
+                Real-time Active Dispatcher Queue
+            </h3>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+
+                <input type="text" placeholder="Search ticket ID or name"
+                    class="h-11 px-4 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500">
+
+                <select class="h-11 px-4 border border-slate-300 rounded-xl outline-none">
+                    <option>All Ticket States</option>
+                </select>
+
+            </div>
+
+        </div>
+
+        <!-- Table -->
+        <table class="w-full min-w-[1000px]">
+
+            <thead class="bg-slate-50">
+                <tr class="text-left text-sm text-slate-500 uppercase">
+
+                    <th class="p-4">Ticket ID</th>
+                    <th class="p-4">Client</th>
+                    <th class="p-4">Required Service</th>
+                    <th class="p-4">Execution Time</th>
+                    <th class="p-4">Assigned Specialist</th>
+                    <th class="p-4">Amount</th>
+                    <th class="p-4">Status</th>
+                    <th class="p-4">Actions</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let ticket of tickets" class="border-t border-slate-100 hover:bg-slate-50 transition">
+
+                    <td class="p-4 font-medium">
+                        {{ ticket.id }}
+                    </td>
+
+                    <td class="p-4">
+
+                        <div class="font-semibold text-slate-800">
+                            {{ ticket.client }}
+                        </div>
+
+                        <div class="text-sm text-slate-500">
+                            {{ ticket.phone }}
+                        </div>
+
+                    </td>
+
+                    <td class="p-4">
+                        {{ ticket.service }}
+                    </td>
+
+                    <td class="p-4">
+                        {{ ticket.time }}
+                    </td>
+
+                    <td class="p-4">
+                        {{ ticket.specialist }}
+                    </td>
+
+                    <td class="p-4 font-semibold">
+                        {{ ticket.amount }}
+                    </td>
+
+                    <td class="p-4">
+
+                        <span class="px-4 py-2 rounded-full text-xs font-semibold bg-green-100 text-green-600">
+                            {{ ticket.status }}
+                        </span>
+
+                    </td>
+
+                    <td class="p-4">
+
+                        <button
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                            Details
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
