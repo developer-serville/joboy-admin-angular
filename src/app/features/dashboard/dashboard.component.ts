@@ -1,12 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
+import {
+  Chart,
+  ChartConfiguration,
+  ChartOptions,
+  registerables
+} from 'chart.js';
+
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard',
-  imports: [BaseChartDirective, CommonModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    BaseChartDirective
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -23,7 +34,7 @@ export class DashboardComponent {
       title: 'IN PROGRESS',
       value: 7,
       badge: 'En Route',
-      color: '#3b82f6'
+      color: '#3b3c3d'
     },
     {
       title: 'COMPLETED TODAY',
@@ -35,7 +46,7 @@ export class DashboardComponent {
       title: 'SLA BREACH RISK',
       value: '28%',
       badge: '7 Delayed Tickets',
-      color: '#d97706'
+      color: '#f59e0b'
     }
   ];
 
@@ -105,34 +116,95 @@ export class DashboardComponent {
     }
   ];
 
-  lineChartData: ChartConfiguration<'line'>['data'] = {
+  public lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [
       {
         label: 'Active En Route',
         data: [5, 8, 6, 11, 10, 4, 7],
-        borderColor: '#3b82f6',
-        backgroundColor: 'rgba(59,130,246,0.1)',
+        borderColor: '#3B82F6',
+        backgroundColor: 'rgba(59,130,246,0.12)',
         fill: true,
-        tension: 0.4
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 3,
+        pointHoverRadius: 4,
+        pointBackgroundColor: '#3B82F6',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2
       },
       {
         label: 'Completed Tickets',
         data: [25, 32, 28, 42, 38, 22, 10],
-        borderColor: '#10b981',
+        borderColor: '#10B981',
         backgroundColor: 'rgba(16,185,129,0.15)',
         fill: true,
-        tension: 0.4
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 3,
+        pointHoverRadius: 4,
+        pointBackgroundColor: '#10B981',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2
       }
     ]
   };
 
-  lineChartOptions: ChartConfiguration<'line'>['options'] = {
+  public lineChartOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
+
+    interaction: {
+      mode: 'index',
+      intersect: false
+    },
+
     plugins: {
       legend: {
-        position: 'top'
+        position: 'top',
+        labels: {
+          usePointStyle: true,
+          pointStyle: 'circle',
+          boxWidth: 8,
+          color: '#64748B',
+          font: {
+            size: 12,
+            weight: 600
+          }
+        }
+      },
+      tooltip: {
+        backgroundColor: '#0F172A',
+        padding: 12,
+        titleColor: '#fff',
+        bodyColor: '#fff'
+      }
+    },
+
+    scales: {
+      x: {
+        grid: {
+          display: false
+        },
+        ticks: {
+          color: '#94A3B8',
+          font: {
+            size: 11
+          }
+        }
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: '#E2E8F0'
+        },
+        ticks: {
+          color: '#94A3B8',
+          stepSize: 10,
+          font: {
+            size: 11
+          }
+        }
       }
     }
   };

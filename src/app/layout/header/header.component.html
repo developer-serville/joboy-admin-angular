@@ -18,17 +18,17 @@
 
             <a href="#" class="flex items-center gap-1 hover:text-white transition">
                 Operations
-                <span>⌄</span>
+                <span></span>
             </a>
 
             <a href="#" class="flex items-center gap-1 hover:text-white transition">
                 Finances
-                <span>⌄</span>
+                <span></span>
             </a>
 
             <a href="#" class="flex items-center gap-1 hover:text-white transition">
                 Personnel
-                <span>⌄</span>
+                <span></span>
             </a>
 
         </nav>
@@ -55,9 +55,28 @@
     <div class="flex items-center gap-5">
 
         <!-- Theme -->
-        <button class="text-white text-xl hover:text-yellow-400 transition">
-            🌙
-        </button>
+        <div class="relative group">
+
+            <button (click)="toggleTheme()" class="text-white text-xl hover:text-yellow-400 transition">
+
+                {{ isDarkMode ? '☀️' : '🌙' }}
+
+            </button>
+
+            <div class="absolute top-12 left-1/2 -translate-x-1/2
+               whitespace-nowrap
+               px-3 py-1 rounded-lg
+               bg-slate-800 text-white text-xs
+               opacity-0 invisible
+               group-hover:opacity-100
+               group-hover:visible
+               transition duration-200">
+
+                {{ isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode' }}
+
+            </div>
+
+        </div>
 
         <!-- Notification -->
         <div class="relative text-xl text-white cursor-pointer">
