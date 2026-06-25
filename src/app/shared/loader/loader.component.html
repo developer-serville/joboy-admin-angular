@@ -1,0 +1,55 @@
+@if (loaderService.loader$ | async) {
+
+<div class="fixed inset-0 z-[9999]
+            flex items-center justify-center
+            bg-black/50 backdrop-blur-md
+            transition-all duration-300">
+
+    <div class="bg-white/10 dark:bg-slate-800/30
+                backdrop-blur-xl
+                border border-white/20
+                rounded-3xl
+                px-10 py-8
+                flex flex-col items-center
+                shadow-2xl
+                min-w-[280px]">
+
+        <img src="assets/logo/joboy-logo.png" alt="Joboy" class="h-10 mb-5 animate-pulse">
+
+        <div class="relative h-16 w-16">
+
+            <div class="absolute inset-0
+                        rounded-full
+                        border-4 border-slate-300/30">
+            </div>
+
+            <div class="absolute inset-0
+                        rounded-full
+                        border-4 border-transparent
+                        border-t-blue-500
+                        border-r-cyan-400
+                        animate-spin">
+            </div>
+
+            <div class="absolute inset-5
+                        rounded-full
+                        bg-blue-500/20
+                        backdrop-blur-sm">
+            </div>
+
+        </div>
+
+        <!-- Loading Text -->
+        <!-- <h3 class="mt-5 text-white font-semibold text-lg font-display">
+            Loading...
+        </h3>
+
+        <p class="text-slate-200 text-sm mt-1">
+            Please wait while we process your request.
+        </p> -->
+
+    </div>
+
+</div>
+
+}

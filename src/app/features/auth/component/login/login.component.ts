@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,7 +7,7 @@ import {
   Validators
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { JoboyService } from '../../../services/joboy.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 
 @Component({
@@ -20,7 +20,7 @@ import { JoboyService } from '../../../services/joboy.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
@@ -37,13 +37,15 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private joboyService: JoboyService
+    private authService: AuthService
   ) {
 
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+  }
+  ngOnInit(): void {
   }
 
   login() {
@@ -58,22 +60,33 @@ export class LoginComponent {
 
     this.loading = true;
 
-    setTimeout(() => {
+    this.authService
+      .userSignIn(
+        this.loginForm.value.username,
+        this.loginForm.value.password
+      )
+      .subscribe({
 
-      const result =
-        this.joboyService.login(
-          this.loginForm.value.username,
-          this.loginForm.value.password
-        );
+        next: (response) => {
 
-      this.loading = false;
+          this.loading = false;
 
-      if (result.success) {
-        this.router.navigate(['/dashboard']);
-      } else {
-      }
+          if (response) {
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.error = 'Invalid credentials';
+          }
+        },
 
-    }, 600);
+        error: (error) => {
+
+          this.loading = false;
+
+          this.error =
+            error.error?.message ||
+            'Login failed.';
+        }
+      });
   }
 
   togglePassword() {

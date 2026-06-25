@@ -90,26 +90,72 @@
 
         </div>
 
-        <!-- User -->
-        <div class="text-right">
-            <h4 class="text-white font-semibold text-lg">
-                Hemand
-            </h4>
 
-            <small class="text-yellow-400 text-xs font-semibold">
-                SENIOR PLATFORM ADMINISTRATOR
-            </small>
-        </div>
 
         <!-- Profile -->
-        <img src="assets/images/profile.jpg" alt="Profile"
-            class="h-12 w-12 rounded-full border-2 border-blue-500 object-cover">
+        <div class="relative flex items-center gap-3 cursor-pointer" (click)="toggleProfileMenu()">
 
-        <!-- Arrow -->
-        <span class="text-gray-300 text-lg cursor-pointer">
-            ⌄
-        </span>
+            <div class="text-right">
+                <h4 class="text-white font-semibold text-l">
+                    {{ userName }}
+                </h4>
 
+                <small class="text-yellow-400 text-s font-semibold">
+                    ADMINISTRATOR
+                </small>
+            </div>
+
+            <img src="assets/images/default-user.png" alt="Profile"
+                class="h-12 w-12 rounded-full border-2 border-blue-500 object-cover">
+            <span class="text-gray-300 text-lg">
+                ⌄
+            </span>
+        </div>
+        @if (showProfileMenu) {
+
+        <div class="absolute top-16 right-0 w-80 bg-white rounded-xl shadow-2xl overflow-hidden z-50">
+
+            <div class="p-6">
+
+                <p class="text-slate-400 text-sm">
+                    Signed in as
+                </p>
+
+                <h3 class="text-l font-bold text-slate-600">
+                    {{ userEmail }}
+                </h3>
+
+
+
+            </div>
+
+            <div class="border-t">
+
+                <button (click)="goToProfile()"
+                    class="w-full flex items-center gap-4 px-6 py-4 hover:bg-slate-50 text-slate-600">
+
+                    👤 My Account Profile
+
+                </button>
+
+                <button class="w-full flex items-center gap-4 px-6 py-4 hover:bg-slate-50 text-slate-600">
+
+                    🔒 Change Password
+
+                </button>
+
+                <button (click)="logout()"
+                    class="w-full flex items-center gap-4 px-6 py-4 text-red-500 hover:bg-red-50">
+
+                    🚪 Sign Out Portal
+
+                </button>
+
+            </div>
+
+        </div>
+
+        }
     </div>
 
 </header>

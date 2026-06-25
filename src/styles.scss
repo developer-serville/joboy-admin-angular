@@ -49,3 +49,22 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+.success-snackbar {
+  --mdc-snackbar-container-color: #16a34a !important;
+  --mat-mdc-snack-bar-button-color: white !important;
+
+  color: white !important;
+  border-radius: 12px !important;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(22, 163, 74, 0.35);
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #dc2626 !important;
+  --mat-mdc-snack-bar-button-color: white !important;
+
+  color: white !important;
+  border-radius: 12px !important;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.35);
+}

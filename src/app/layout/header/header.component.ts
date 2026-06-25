@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../features/auth/services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,8 +10,18 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   isDarkMode = true;
+  showProfileMenu = false;
+
+  userName = '';
+  userEmail = '';
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+
     const theme = localStorage.getItem('theme');
 
     if (theme === 'light') {
@@ -18,6 +30,14 @@ export class HeaderComponent implements OnInit {
     } else {
       this.isDarkMode = true;
       document.documentElement.classList.add('dark');
+    }
+
+    const userData = localStorage.getItem('userData');
+
+    if (userData) {
+      const user = JSON.parse(userData);
+      this.userName = user.name;
+      this.userEmail = user.email;
     }
   }
 
@@ -31,5 +51,18 @@ export class HeaderComponent implements OnInit {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
+  }
+
+  toggleProfileMenu(): void {
+    this.showProfileMenu = !this.showProfileMenu;
+  }
+
+  logout(): void {
+    this.authService.logout();
+  }
+
+  goToProfile(): void {
+    this.showProfileMenu = false;
+    this.router.navigate(['/profile']);
   }
 }
