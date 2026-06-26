@@ -1,20 +1,41 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../features/auth/services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
+  imports: [CommonModule, RouterLink],
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
 
   isDarkMode = true;
   showProfileMenu = false;
+  showOperationsMenu = false;
 
   userName = '';
   userEmail = '';
-
+  operationsMenu = [
+    {
+      title: 'CLIENT BOOKINGS',
+      items: [
+        {
+          name: 'Active Tickets Ledger',
+          route: '/orders'
+        },
+        {
+          name: 'Store Orders Register',
+          route: '/store-orders'
+        },
+        {
+          name: 'Create Manual Booking',
+          route: '/manual-booking'
+        }
+      ]
+    }
+  ];
   constructor(
     private authService: AuthService,
     private router: Router
@@ -64,5 +85,9 @@ export class HeaderComponent implements OnInit {
   goToProfile(): void {
     this.showProfileMenu = false;
     this.router.navigate(['/profile']);
+  }
+  navigate(route: string) {
+    this.showOperationsMenu = false;
+    this.router.navigate(['/order-list']);
   }
 }

@@ -1,25 +1,79 @@
 <header class="bg-[#040b1f] border-b border-slate-800 px-8 h-20 flex items-center justify-between">
 
-    <!-- Left -->
     <div class="flex items-center gap-6">
 
-        <!-- Logo -->
         <div>
             <img src="assets/logo/joboy-logo.png" alt="Joboy" class="h-10">
         </div>
 
-        <!-- Admin Badge -->
-        <span class="bg-slate-800 text-yellow-400 px-4 py-2 rounded-xl font-bold text-sm">
-            ADMIN
-        </span>
+        <a routerLink="/dashboard"
+            class="bg-slate-800 text-yellow-400 px-4 py-2 rounded-xl font-bold text-sm cursor-pointer hover:bg-slate-700 transition">
 
-        <!-- Menu -->
+            ADMIN
+
+        </a>
+
         <nav class="flex items-center gap-8 text-gray-300">
 
-            <a href="#" class="flex items-center gap-1 hover:text-white transition">
-                Operations
-                <span></span>
-            </a>
+            <div class="relative" (mouseenter)="showOperationsMenu = true" (mouseleave)="showOperationsMenu = false">
+
+                <button class="flex items-center gap-2 px-4 py-2 rounded-xl
+               bg-slate-800 text-white-400 font-semibold">
+
+                    Operations
+
+                    <svg class="w-4 h-4 transition" [class.rotate-180]="showOperationsMenu" fill="none"
+                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+
+                    </svg>
+
+                </button>
+
+                @if(showOperationsMenu){
+
+                <div class="absolute left-0 top-full mt-3
+            w-80
+            bg-white rounded-2xl
+            shadow-2xl
+            border border-slate-200
+            z-[9999]">
+
+                    <div class="p-5">
+
+                        <h4 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">
+                            CLIENT BOOKINGS
+                        </h4>
+
+                        <div class="space-y-2">
+
+                            <button *ngFor="let item of operationsMenu[0].items" (click)="navigate(item.route)" class="w-full flex items-center gap-3
+                       px-3 py-3 rounded-xl
+                       text-left text-slate-600
+                       hover:bg-slate-100
+                       hover:text-blue-600
+                       transition">
+
+                                <span class="text-lg">
+                                    📋
+                                </span>
+
+                                <span class="font-medium">
+                                    {{ item.name }}
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
 
             <a href="#" class="flex items-center gap-1 hover:text-white transition">
                 Finances
@@ -35,7 +89,6 @@
 
     </div>
 
-    <!-- Search -->
     <div class="w-[400px]">
 
         <div class="flex items-center bg-slate-800 border border-slate-700 rounded-2xl px-4 h-12">
@@ -51,10 +104,8 @@
 
     </div>
 
-    <!-- Right -->
     <div class="flex items-center gap-5">
 
-        <!-- Theme -->
         <div class="relative group">
 
             <button (click)="toggleTheme()" class="text-white text-xl hover:text-yellow-400 transition">
@@ -78,7 +129,6 @@
 
         </div>
 
-        <!-- Notification -->
         <div class="relative text-xl text-white cursor-pointer">
 
             🔔
@@ -92,7 +142,6 @@
 
 
 
-        <!-- Profile -->
         <div class="relative flex items-center gap-3 cursor-pointer" (click)="toggleProfileMenu()">
 
             <div class="text-right">

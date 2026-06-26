@@ -133,7 +133,7 @@ export class AuthService extends BaseHttpService {
 
         return this.httpClient
             .post<HttpResponseModel<ProfileData>>(
-                `${this.baseUrl}profile`,
+                `${this.baseUrl}profile/view`,
                 {
                     user_id: userData?.id
                 }
@@ -158,7 +158,7 @@ export class AuthService extends BaseHttpService {
 
         return this.httpClient
             .post<HttpResponseModel<any>>(
-                `${this.baseUrl}edit-profile`,
+                `${this.baseUrl}profile/edit`,
                 {
                     firstname,
                     lastname,

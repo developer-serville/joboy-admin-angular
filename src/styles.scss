@@ -5,8 +5,10 @@
 @tailwind utilities;
 
 /* Global body styles */
-body {
-  font-family: "Inter", sans-serif;
+html,
+body,
+.mat-mdc-typography {
+  font-family: "Inter", sans-serif !important;
 }
 
 .font-display {
@@ -47,7 +49,8 @@ body {
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Inter", sans-serif;
+  background: #f6f8fc;
 }
 .success-snackbar {
   --mdc-snackbar-container-color: #16a34a !important;

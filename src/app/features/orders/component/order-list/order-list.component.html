@@ -1,0 +1,580 @@
+<div class="min-h-screen bg-[#f6f8fc] dark:bg-slate-900 px-6 py-5 font-sans transition-colors duration-300">
+
+    <div class="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-5">
+
+        <div>
+            <h1 class="font-display text-[28px] font-bold tracking-tight text-slate-900 dark:text-white">
+                Booking Records Register
+            </h1>
+            <p class="mt-3 text-[13px] text-slate-500 dark:text-slate-400">
+                Browse, inspect, filter, and modify domestic service reservation tickets.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <button
+                class="h-9 px-5 rounded-xl font-bold bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold shadow-md transition">
+                + Add Order
+            </button>
+
+            <button
+                class="h-9 px-5 rounded-xl font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+                Export to CSV
+
+            </button>
+
+            <div
+                class="h-9 px-5 rounded-xl font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 flex items-center text-sm font-medium text-slate-500 dark:text-slate-300">
+                Count :
+                <span class="ml-2 font-bold text-slate-700 dark:text-white">
+
+                    {{totalRecords}}
+
+                </span>
+
+                <span class="ml-1">
+
+                    items
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="mt-5 border-b border-slate-300 dark:border-slate-700"></div>
+
+
+    <div
+        class="mt-8 bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm p-7">
+
+
+        <div>
+
+            <h5 class="text-[11px] uppercase tracking-[2px] font-bold text-slate-400 mb-5">
+
+                Desk Service Queues
+
+            </h5>
+
+            <div class="flex flex-wrap gap-3">
+
+                <button
+                    class="flex items-center gap-3 px-5 py-3 rounded-xl bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition">
+
+                    <mat-icon class="!text-[20px]">layers</mat-icon>
+
+                    <span class="text-sm font-semibold">
+                        All Booking Tasks
+                    </span>
+
+                    <span class="ml-2 rounded-full bg-blue-500 px-2 py-0.5 text-[10px] font-bold">
+                        {{ totalRecords }}
+                    </span>
+
+                </button>
+
+                <button
+                    class="flex items-center gap-3 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+
+                    <mat-icon class="text-emerald-600">calendar_today</mat-icon>
+
+                    <span class="text-sm font-medium text-slate-700 dark:text-white">
+                        Today's Orders
+                    </span>
+
+                </button>
+
+                <button
+                    class="flex items-center gap-3 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+
+                    <mat-icon class="text-indigo-600">schedule</mat-icon>
+
+                    <span class="text-sm font-medium text-slate-700 dark:text-white">
+                        Upcoming
+                    </span>
+
+                </button>
+
+                <button
+                    class="flex items-center gap-3 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+
+                    <mat-icon class="text-orange-500">shield</mat-icon>
+
+                    <span class="text-sm font-medium text-slate-700 dark:text-white">
+                        For Review
+                    </span>
+
+                </button>
+
+                <button
+                    class="flex items-center gap-3 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+
+                    <mat-icon class="text-yellow-500">star</mat-icon>
+
+                    <span class="text-sm font-medium text-slate-700 dark:text-white">
+                        Follow Queue
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="my-7 border-b border-slate-200 dark:border-slate-700"></div>
+
+
+        <!-- <div>
+
+            <h5 class="text-[11px] uppercase tracking-[2px] font-bold text-slate-400 mb-4">
+
+                Status Sub-Filters
+
+            </h5>
+
+            <div class="flex flex-wrap gap-3">
+
+                <button *ngFor="let tab of statusTabs" (click)="changeStatus(tab.value)"
+                    class="px-6 py-3 rounded-xl text-[15px] font-semibold transition-all duration-300" [ngClass]="{
+
+                        'bg-slate-900 text-white shadow-md':filter.status==tab.value,
+
+                        'bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-600':filter.status!=tab.value
+
+                    }">
+
+                    {{tab.title}}
+
+                </button>
+
+            </div>
+
+        </div> -->
+
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
+
+            <input [(ngModel)]="filter.search" (keyup.enter)="searchOrders()"
+                placeholder="Search via Order ID, Client, Service category, Provider..."
+                class="h-12 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-5 text-[12px] outline-none focus:border-blue-500">
+
+            <input type="date" [(ngModel)]="filter.from_date"
+                class="h-12 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-5 text-[12px] outline-none">
+
+            <select
+                class="h-12 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-5 text-[12px] outline-none">
+
+                <option>
+
+                    Newest First
+
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            class="mt-7 pt-5 border-t border-slate-200 dark:border-slate-700 flex flex-col xl:flex-row xl:justify-between gap-4">
+
+            <div class="flex items-center gap-5 text-[12px]">
+
+                <label class="flex items-center gap-3">
+
+                    <input type="checkbox">
+
+                    <span class="font-medium">
+
+                        SHOW ALL ORDER COMMENTS INLINE
+
+                    </span>
+
+                </label>
+
+                <span class="text-blue-500">
+
+                    Active Comments : 1 log profiles
+
+                </span>
+
+            </div>
+
+            <div class="text-[12px] text-slate-500">
+
+                Tip :
+
+                Click the
+
+                <span class="font-semibold text-blue-600">
+
+                    Comment
+
+                </span>
+
+                badge in any row below to append guidelines.
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div
+        class="mt-6 bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+
+
+        <div *ngIf="loading" class="flex items-center justify-center py-20">
+
+            <div class="h-12 w-12 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
+
+        </div>
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full min-w-[1200px]">
+
+
+                <thead class="bg-[#fafbfd] dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+
+                    <tr>
+
+                        <th class="w-12"></th>
+
+                        <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                            ORDER ID
+                        </th>
+
+                        <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                            CUSTOMER
+                        </th>
+
+                        <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                            SERVICE TYPE
+                        </th>
+
+                        <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                            CREATION DATE
+                        </th>
+
+                        <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                            EXECUTION STATUS
+                        </th>
+
+                        <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                            ASSIGNED PROVIDER
+                        </th>
+
+                        <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                            ASSIGNED ADMIN
+                        </th>
+
+                        <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                            COMMENTS
+                        </th>
+
+                        <th class="px-4 py-4 text-center text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                            REVIEW
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let order of orders"
+                        class="border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+
+
+                        <td class="px-3 py-4">
+
+                            <button class="text-slate-300 hover:text-yellow-500 text-lg">
+
+                                ☆
+
+                            </button>
+
+                        </td>
+
+
+                        <td class="px-3 py-4">
+
+                            <div class="font-bold text-[12px] text-slate-900 dark:text-white">
+
+                                {{order.order_no}}
+
+                            </div>
+
+                        </td>
+
+
+                        <td class="px-3 py-4">
+
+                            <div class="font-semibold text-[12px] text-slate-900 dark:text-white">
+
+                                {{order.customer_name}}
+
+                            </div>
+
+                            <div class="mt-1 text-[12px] text-slate-400">
+
+                                {{order.customer_mobile}}
+
+                            </div>
+
+                        </td>
+
+
+                        <td class="px-3 py-4">
+
+                            <span
+                                class="inline-flex rounded-md bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+
+                                {{order.service}}
+
+                            </span>
+
+                        </td>
+
+
+                        <td class="px-3 py-4">
+
+                            <div class="font-medium text-[12px] text-slate-700 dark:text-white">
+
+                                {{order.created_on | date:'yyyy-MM-dd'}}
+
+                            </div>
+
+                            <div class="mt-1 text-[12px] text-slate-400">
+
+                                {{order.created_on | date:'hh:mm a'}}
+
+                            </div>
+
+                        </td>
+
+
+                        <td class="px-3 py-4">
+
+                            <span
+                                class="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50 px-4 py-1 text-[11px] font-bold uppercase text-amber-600">
+
+                                <span class="h-2 w-2 rounded-full bg-amber-500"></span>
+
+                                {{order.status}}
+
+                            </span>
+
+                        </td>
+
+
+                        <td class="px-3 py-4">
+
+                            <span
+                                class="inline-flex rounded-md bg-red-50 px-3 py-1 text-[11px] font-bold uppercase text-pink-600">
+
+                                {{order.provider_name || 'Pending Dispatch'}}
+
+                            </span>
+
+                        </td>
+
+
+                        <td class="px-3 py-4">
+
+                            <span
+                                class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold uppercase text-slate-500">
+
+                                <span class="h-2 w-2 rounded-full bg-slate-400"></span>
+
+                                Unassigned
+
+                            </span>
+
+                        </td>
+
+
+                        <td class="px-3 py-4">
+
+                            <div class="max-w-[160px] rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
+                                <div class="font-bold text-[12px]">
+
+                                    🗨 1 Note
+
+                                </div>
+
+                                <div class="truncate text-[12px] italic text-slate-500">
+
+                                    Washing machine does not ...
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td class="px-4 py-5 text-center">
+
+                            <button class="text-slate-400 hover:text-slate-700 text-xl">
+
+                                ⋮
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="mt-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm px-7 py-6">
+
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-5">
+
+
+            <div class="text-[13px] font-medium text-slate-500 dark:text-slate-400">
+
+                Showing records
+
+                <span class="font-semibold text-slate-800 dark:text-white">
+
+                    {{ totalRecords === 0 ? 0 : filter.page * filter.limit + 1 }}
+
+                </span>
+
+                to
+
+                <span class="font-semibold text-slate-800 dark:text-white">
+
+                    {{ endRecord }}
+
+                </span>
+
+                of
+
+                <span class="font-semibold text-slate-800 dark:text-white">
+
+                    {{ totalRecords }}
+
+                </span>
+
+                entries
+
+            </div>
+
+
+            <div class="flex items-center gap-2">
+
+
+                <button (click)="previousPage()" [disabled]="filter.page === 0" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-600
+                       bg-white dark:bg-slate-700
+                       hover:bg-slate-100 dark:hover:bg-slate-600
+                       disabled:opacity-40
+                       disabled:cursor-not-allowed
+                       transition">
+
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+
+                    </svg>
+
+                </button>
+
+
+                <button *ngFor="let page of visiblePages" (click)="goToPage(page)"
+                    class="w-10 h-10 rounded-xl text-sm font-semibold transition" [ngClass]="{
+
+                'bg-blue-600 text-white shadow border border-blue-600':
+                filter.page + 1 === page,
+
+                'bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-600':
+                filter.page + 1 !== page
+
+            }">
+
+                    {{ page }}
+
+                </button>
+
+
+                <button (click)="nextPage()" [disabled]="filter.page >= totalPages - 1" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-600
+                       bg-white dark:bg-slate-700
+                       hover:bg-slate-100 dark:hover:bg-slate-600
+                       disabled:opacity-40
+                       disabled:cursor-not-allowed
+                       transition">
+
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+
+                    </svg>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    @if(!loading && orders.length===0){
+
+    <div
+        class="mt-8 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm py-24">
+
+        <div class="flex flex-col items-center">
+
+            <div class="h-24 w-24 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+
+                <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8"
+                    viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M20 13V7a2 2 0 00-2-2h-3V3H9v2H6a2 2 0 00-2 2v6m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0H4" />
+
+                </svg>
+
+            </div>
+
+            <h3 class="mt-6 text-2xl font-bold text-slate-800 dark:text-white">
+
+                No Booking Records Found
+
+            </h3>
+
+            <p class="mt-2 text-[15px] text-slate-500 dark:text-slate-400">
+
+                There are no bookings matching your current filters.
+
+            </p>
+
+            <button (click)="searchOrders()"
+                class="mt-8 rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-sm font-semibold transition">
+
+                Refresh List
+
+            </button>
+
+        </div>
+
+    </div>
+
+    }
