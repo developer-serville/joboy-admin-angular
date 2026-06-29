@@ -1,21 +1,58 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Global body styles */
+/* -------------------------------------------------------------------------- */
+/* Global Typography */
+/* -------------------------------------------------------------------------- */
+
 html,
+body {
+  height: 100%;
+  margin: 0;
+  background: #f6f8fc;
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #0f172a;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body,
-.mat-mdc-typography {
+.mat-mdc-typography,
+.mat-mdc-button,
+.mat-mdc-form-field,
+.mat-mdc-select,
+.mat-mdc-menu-panel,
+.mat-mdc-dialog-container,
+.mat-mdc-card {
   font-family: "Inter", sans-serif !important;
 }
 
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 .font-display {
-  font-family: "Outfit", sans-serif;
+  font-family: "Outfit", sans-serif !important;
 }
 
-/* Custom Tailwind utilities */
+/* Numbers & IDs */
+.font-mono {
+  font-family: "JetBrains Mono", monospace !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Utilities */
+/* -------------------------------------------------------------------------- */
+
 @layer utilities {
   .glassmorphism {
     background: rgba(255, 255, 255, 0.85);
@@ -24,7 +61,10 @@ body,
   }
 }
 
-/* Scrollbar styling */
+/* -------------------------------------------------------------------------- */
+/* Scrollbar */
+/* -------------------------------------------------------------------------- */
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -36,22 +76,13 @@ body,
 
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-  border-radius: 4px;
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
 
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  background: #f6f8fc;
-}
 .success-snackbar {
   --mdc-snackbar-container-color: #16a34a !important;
   --mat-mdc-snack-bar-button-color: white !important;
@@ -59,7 +90,6 @@ body {
   color: white !important;
   border-radius: 12px !important;
   font-weight: 600;
-  box-shadow: 0 8px 24px rgba(22, 163, 74, 0.35);
 }
 
 .error-snackbar {
@@ -69,5 +99,42 @@ body {
   color: white !important;
   border-radius: 12px !important;
   font-weight: 600;
-  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.35);
+}
+.mat-icon {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
+  font-size: 18px;
+}
+@layer components {
+  .joboy-input {
+    @apply w-full
+      h-11
+      rounded-xl
+      border
+      border-slate-300
+      dark:border-slate-600
+
+      bg-white
+      dark:bg-slate-800
+
+      text-slate-700
+      dark:text-slate-200
+
+      placeholder:text-slate-400
+      dark:placeholder:text-slate-500
+
+      text-sm
+      font-medium
+
+      outline-none
+      transition-all
+      duration-200
+
+      focus:border-blue-500
+      focus:ring-2
+      focus:ring-blue-500/20;
+  }
 }

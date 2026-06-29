@@ -13,6 +13,7 @@ export interface Order {
     status_code: number;
     transaction_status: number;
     working_play_status: number;
+    scheduled_date: string;
 }
 
 export interface OrderListResponse {

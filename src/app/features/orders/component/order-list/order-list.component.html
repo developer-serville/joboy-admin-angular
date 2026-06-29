@@ -13,18 +13,18 @@
 
         <div class="flex flex-wrap items-center gap-3">
             <button
-                class="h-9 px-5 rounded-xl font-bold bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold shadow-md transition">
+                class="font-display text-[28px] font-bold h-9 px-5 rounded-xl font-bold bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold shadow-md transition">
                 + Add Order
             </button>
 
             <button
-                class="h-9 px-5 rounded-xl font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+                class="font-display text-[28px] font-bold h-9 px-5 rounded-xl font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-white text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition">
                 Export to CSV
 
             </button>
 
             <div
-                class="h-9 px-5 rounded-xl font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 flex items-center text-sm font-medium text-slate-500 dark:text-slate-300">
+                class="font-display text-[28px] font-bold h-9 px-5 rounded-xl font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 flex items-center text-sm font-medium text-slate-500 dark:text-slate-300">
                 Count :
                 <span class="ml-2 font-bold text-slate-700 dark:text-white">
 
@@ -53,69 +53,77 @@
 
         <div>
 
-            <h5 class="text-[11px] uppercase tracking-[2px] font-bold text-slate-400 mb-5">
+            <h5 class="mb-4
+text-[12px]
+font-bold
+uppercase
+tracking-[2px]
+text-slate-400
+dark:text-slate-500">
 
                 Desk Service Queues
 
             </h5>
 
-            <div class="flex flex-wrap gap-3">
+            <div class="font-display font-bold flex flex-wrap items-center gap-3">
+                <button *ngFor="let menu of queueMenus" (click)="changeType(menu.value)" class="group
+           inline-flex
+           items-center
+           justify-center
+           gap-2
+           h-10
+           px-4
+           rounded-2xl
+           border
+           whitespace-nowrap
+           transition-all duration-200" [ngClass]="{
 
-                <button
-                    class="flex items-center gap-3 px-5 py-3 rounded-xl bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition">
+      'bg-blue-600 border-blue-600 text-white shadow-md':
+      filter.type===menu.value,
 
-                    <mat-icon class="!text-[20px]">layers</mat-icon>
+      'bg-white border-slate-200 text-slate-700 hover:bg-slate-50
+       dark:bg-slate-900 dark:border-slate-700
+       dark:text-slate-200 dark:hover:bg-slate-800':
+      filter.type!==menu.value
 
-                    <span class="text-sm font-semibold">
-                        All Booking Tasks
+    }">
+
+                    <mat-icon class="!text-[18px] !w-[18px] !h-[18px] leading-none flex-shrink-0"
+                        [ngClass]="filter.type===menu.value ? 'text-white' : 'text-slate-400'">
+
+                        {{menu.icon}}
+
+                    </mat-icon>
+
+                    <span class="text-[14px] font-semibold leading-none">
+
+                        {{menu.title}}
+
                     </span>
 
-                    <span class="ml-2 rounded-full bg-blue-500 px-2 py-0.5 text-[10px] font-bold">
-                        {{ totalRecords }}
-                    </span>
+                    <span class="ml-1
+               inline-flex
+               items-center
+               justify-center
+               min-w-[22px]
+               h-[22px]
+               rounded-full
+               px-2
+               text-[11px]
+               font-bold
+               leading-none" [ngClass]="{
 
-                </button>
+          'bg-white/20 text-white':
+          filter.type===menu.value,
 
-                <button
-                    class="flex items-center gap-3 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+          'bg-slate-100 text-slate-600
+           dark:bg-slate-700 dark:text-slate-300':
+          filter.type!==menu.value
 
-                    <mat-icon class="text-emerald-600">calendar_today</mat-icon>
+        }">
 
-                    <span class="text-sm font-medium text-slate-700 dark:text-white">
-                        Today's Orders
-                    </span>
+                        {{menu.count}}
 
-                </button>
-
-                <button
-                    class="flex items-center gap-3 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
-
-                    <mat-icon class="text-indigo-600">schedule</mat-icon>
-
-                    <span class="text-sm font-medium text-slate-700 dark:text-white">
-                        Upcoming
-                    </span>
-
-                </button>
-
-                <button
-                    class="flex items-center gap-3 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
-
-                    <mat-icon class="text-orange-500">shield</mat-icon>
-
-                    <span class="text-sm font-medium text-slate-700 dark:text-white">
-                        For Review
-                    </span>
-
-                </button>
-
-                <button
-                    class="flex items-center gap-3 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
-
-                    <mat-icon class="text-yellow-500">star</mat-icon>
-
-                    <span class="text-sm font-medium text-slate-700 dark:text-white">
-                        Follow Queue
                     </span>
 
                 </button>
@@ -124,7 +132,7 @@
 
         </div>
 
-        <div class="my-7 border-b border-slate-200 dark:border-slate-700"></div>
+        <div class="my-4 border-b border-slate-200 dark:border-slate-700"></div>
 
 
         <!-- <div>
@@ -155,39 +163,143 @@
         </div> -->
 
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
+        <div class="font-display font-bold rounded-2xl
+           bg-white dark:bg-slate-900
+           border border-slate-200 dark:border-slate-700
+           shadow-sm dark:shadow-black/20
+           p-6">
+            <!-- Header -->
+            <div class="font-display text-[18px] font-bold flex items-center gap-2 mb-6">
 
-            <input [(ngModel)]="filter.search" (keyup.enter)="searchOrders()"
-                placeholder="Search via Order ID, Client, Service category, Provider..."
-                class="h-12 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-5 text-[12px] outline-none focus:border-blue-500">
+                <mat-icon class="text-blue-600 dark:text-blue-400">
+                    filter_alt
+                </mat-icon>
 
-            <input type="date" [(ngModel)]="filter.from_date"
-                class="h-12 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-5 text-[12px] outline-none">
+                <h4 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-100">
+                    Advanced Booking Filter Board
+                </h4>
 
-            <select
-                class="h-12 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-5 text-[12px] outline-none">
+            </div>
 
-                <option>
+            <!-- Filters -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7  gap-4 items-end">
 
-                    Newest First
+                <!-- Search -->
+                <div>
+                    <label
+                        class="block mb-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        Search
+                    </label>
 
-                </option>
+                    <div class="relative">
 
-            </select>
+                        <mat-icon class="absolute inset-y-0 left-3 flex items-center justify-center my-auto
+               text-slate-400 dark:text-slate-500 !text-[18px] pointer-events-none">
+
+                            search
+
+                        </mat-icon>
+
+                        <input [(ngModel)]="filter.search" (keyup.enter)="searchOrders()"
+                            placeholder="Order ID / Customer / Mobile" class="joboy-input pl-10 pr-3">
+
+                    </div>
+                </div>
+
+                <!-- From -->
+                <div>
+                    <label
+                        class="block mb-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        From
+                    </label>
+
+                    <input type="date" [(ngModel)]="filter.from_date" class="joboy-input px-3">
+                </div>
+
+                <!-- To -->
+                <div>
+                    <label
+                        class="block mb-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        To
+                    </label>
+
+                    <input type="date" [(ngModel)]="filter.to_date" class="joboy-input px-3">
+                </div>
+
+                <!-- Status -->
+                <div>
+                    <label
+                        class="block mb-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        Status
+                    </label>
+
+                    <select [(ngModel)]="filter.status" class="joboy-input px-3">
+
+                        <option value="">All Statuses</option>
+
+                        <option *ngFor="let tab of statusTabs" [value]="tab.value">
+                            {{tab.title}}
+                        </option>
+
+                    </select>
+                </div>
+
+                <!-- City -->
+                <div>
+                    <label
+                        class="block mb-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        City
+                    </label>
+
+                    <select [(ngModel)]="filter.city" class="joboy-input px-3">
+
+                        <option value="">All Cities</option>
+
+                    </select>
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label
+                        class="block mb-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        Category
+                    </label>
+
+                    <select class="joboy-input px-3">
+
+                        <option>All</option>
+
+                    </select>
+                </div>
+
+                <!-- Search Button -->
+                <div>
+
+                    <button (click)="searchOrders()"
+                        class="w-full h-11 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold flex items-center justify-center gap-2 transition">
+
+                        <mat-icon>search</mat-icon>
+
+                        Search
+
+                    </button>
+
+                </div>
+
+            </div>
 
         </div>
-
 
         <div
             class="mt-7 pt-5 border-t border-slate-200 dark:border-slate-700 flex flex-col xl:flex-row xl:justify-between gap-4">
 
-            <div class="flex items-center gap-5 text-[12px]">
+            <div class="font-display text-[12px] font-semibold flex items-center gap-5 text-[12px]">
 
                 <label class="flex items-center gap-3">
 
                     <input type="checkbox">
 
-                    <span class="font-medium">
+                    <span class="font-medium dark:text-white">
 
                         SHOW ALL ORDER COMMENTS INLINE
 
@@ -203,7 +315,7 @@
 
             </div>
 
-            <div class="text-[12px] text-slate-500">
+            <div class="font-display font-medium text-[12px] text-slate-500">
 
                 Tip :
 
@@ -240,7 +352,8 @@
             <table class="w-full min-w-[1200px]">
 
 
-                <thead class="bg-[#fafbfd] dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                <thead
+                    class="font-display font-bold bg-[#fafbfd] dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
 
                     <tr>
 
@@ -253,7 +366,9 @@
                         <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
                             CUSTOMER
                         </th>
-
+                        <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
+                            CITY
+                        </th>
                         <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
                             SERVICE TYPE
                         </th>
@@ -263,15 +378,15 @@
                         </th>
 
                         <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
-                            EXECUTION STATUS
+                            STATUS
                         </th>
 
                         <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
-                            ASSIGNED PROVIDER
+                            PROVIDERS
                         </th>
 
                         <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
-                            ASSIGNED ADMIN
+                            SCHEDULE DATE
                         </th>
 
                         <th class="px-4 py-4 text-left text-[12px] font-bold uppercase tracking-wider text-[#94A3B8]">
@@ -289,34 +404,23 @@
                 <tbody>
 
                     <tr *ngFor="let order of orders"
-                        class="border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+                        class="font-display font-bold border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition">
 
 
                         <td class="px-3 py-4">
 
                             <button class="text-slate-300 hover:text-yellow-500 text-lg">
-
                                 ☆
-
                             </button>
-
                         </td>
 
-
                         <td class="px-3 py-4">
-
                             <div class="font-bold text-[12px] text-slate-900 dark:text-white">
-
                                 {{order.order_no}}
-
                             </div>
-
                         </td>
-
-
                         <td class="px-3 py-4">
-
-                            <div class="font-semibold text-[12px] text-slate-900 dark:text-white">
+                            <div class="font-semibold text-[13px] text-slate-900 dark:text-white">
 
                                 {{order.customer_name}}
 
@@ -330,6 +434,15 @@
 
                         </td>
 
+                        <td class="px-3 py-4">
+
+                            <div class="font-medium text-[12px] text-slate-900 dark:text-white">
+
+                                {{order.city}}
+
+                            </div>
+
+                        </td>
 
                         <td class="px-3 py-4">
 
@@ -391,9 +504,8 @@
                             <span
                                 class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold uppercase text-slate-500">
 
-                                <span class="h-2 w-2 rounded-full bg-slate-400"></span>
+                                {{order.scheduled_date}}
 
-                                Unassigned
 
                             </span>
 
@@ -403,7 +515,7 @@
                         <td class="px-3 py-4">
 
                             <div class="max-w-[160px] rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-                                <div class="font-bold text-[12px]">
+                                <div class="font-semibold text-[12px]">
 
                                     🗨 1 Note
 
@@ -447,7 +559,7 @@
         <div class="flex flex-col lg:flex-row items-center justify-between gap-5">
 
 
-            <div class="text-[13px] font-medium text-slate-500 dark:text-slate-400">
+            <div class="font-display font-bold text-[13px] font-medium text-slate-500 dark:text-slate-400">
 
                 Showing records
 
@@ -478,7 +590,7 @@
             </div>
 
 
-            <div class="flex items-center gap-2">
+            <div class="font-display font-bold flex items-center gap-2">
 
 
                 <button (click)="previousPage()" [disabled]="filter.page === 0" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-slate-600

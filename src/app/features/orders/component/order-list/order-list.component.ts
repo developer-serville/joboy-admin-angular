@@ -23,46 +23,90 @@ export class OrderListComponent implements OnInit {
   filter: OrderFilter = {
     page: 0,
     limit: 25,
-    status: 25,
+    status: '',
     order_id: '',
     customer: '',
     from_date: '',
     to_date: '',
-    city: '0',
-    cat_id: [],
-    search: ''
-
+    city: '',
+    cat_id: '',
+    search: '',
+    type: ''
   };
 
-  statusTabs = [
-
+  queueMenus = [
     {
-      title: 'All Booking Tickets',
-      value: 25
+      title: 'All Bookings',
+      value: '',
+      icon: 'layers',
+      count: 25
     },
-
     {
       title: 'Pending',
-      value: 0
+      value: '0',
+      icon: 'schedule',
+      count: 7
     },
-
     {
       title: 'In Progress',
-      value: 1
+      value: '1',
+      icon: 'auto_fix_high',
+      count: 7
     },
-
     {
-      title: 'Completed',
-      value: 3
+      title: "Today's",
+      value: '2',
+      icon: 'calendar_today',
+      count: 2
     },
-
+    {
+      title: 'Upcoming',
+      value: '3',
+      icon: 'event',
+      count: 5
+    },
     {
       title: 'Cancelled',
-      value: 6
+      value: '4',
+      icon: 'cancel',
+      count: 2
+    },
+    {
+      title: 'For Review',
+      value: '5',
+      icon: 'shield',
+      count: 9
+    },
+    {
+      title: 'Follow Up',
+      value: '6',
+      icon: 'star_outline',
+      count: 0
     }
-
   ];
 
+  statusTabs = [
+    {
+      title: 'All Statuses',
+      value: ''
+    },
+    {
+      title: 'Pending',
+      value: '0'
+    },
+    {
+      title: 'In Progress',
+      value: '1'
+    },
+    {
+      title: 'Completed',
+      value: '3'
+    },
+    {
+      title: 'Cancelled',
+      value: '6'
+    }
+  ];
   constructor(
     private orderService: OrderService
   ) { }
@@ -112,9 +156,9 @@ export class OrderListComponent implements OnInit {
     }
   }
 
-  changeStatus(status: number) {
-    this.filter.status = status;
-    this.filter.page = 0
+  changeType(type: string): void {
+    this.filter.type = type;
+    this.filter.page = 0;
     this.getOrders();
   }
 
