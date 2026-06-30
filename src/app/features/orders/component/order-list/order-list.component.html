@@ -278,7 +278,9 @@ dark:text-slate-500">
 
                     <select [(ngModel)]="filter.cat_id" class="joboy-input px-3">
 
-                        <option value="">All Services</option>
+                        <option [ngValue]="null">
+
+                            All Services</option>
 
                         <option *ngFor="let service of serviceList" [ngValue]="service.id">
 
@@ -589,10 +591,13 @@ dark:text-slate-500">
 
                                             <div>
 
-                                                <div
+                                                <div *ngIf="order.note.activity || order.note.name"
                                                     class="text-[11px] font-bold uppercase tracking-wide text-black-600">
 
-                                                    {{ order.note.activity }} ( {{ order.note.name }})
+                                                    {{ order.note.activity }}
+                                                    <ng-container *ngIf="order.note.name">
+                                                        ({{ order.note.name }})
+                                                    </ng-container>
 
                                                 </div>
 

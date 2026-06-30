@@ -25,7 +25,7 @@ export class OrderListComponent implements OnInit, OnDestroy {
   visiblePages: number[] = [];
   readonly Math = Math;
   expandedOrderId: string | null = null;
-  commentInputs: { [key: number]: string } = {};
+  commentInputs: Partial<Record<number, string>> = {};
   statusTabs: OrderStatus[] = [];
   cityList: OrderCityList[] = [];
   serviceList: OrderServiceList[] = [];
