@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
   isDarkMode = true;
   showProfileMenu = false;
   showOperationsMenu = false;
+  profileImage = 'assets/images/default-user.png';
 
   userName = '';
   userEmail = '';
@@ -42,7 +43,9 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    this.authService.profileImage$.subscribe(image => {
+      this.profileImage = image || 'assets/images/default-user.png';
+    });
     const theme = localStorage.getItem('theme');
 
     if (theme === 'light') {

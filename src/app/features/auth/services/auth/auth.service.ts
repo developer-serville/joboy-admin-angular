@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { BaseHttpService, HttpResponseModel } from '../../../../core/services/base-http.service';
 import { LoaderService } from '../../../../core/services/loader.service';
 import { ResponseHandlerService } from '../../../../core/services/response-handler.service';
@@ -23,7 +23,16 @@ export class AuthService extends BaseHttpService {
     ) {
         super(httpClient);
     }
+    private profileImageSubject = new BehaviorSubject<string>('assets/images/default-user.png');
+    profileImage$ = this.profileImageSubject.asObservable();
 
+    setProfileImage(image: string) {
+        this.profileImageSubject.next(image);
+    }
+
+    getCurrentProfileImage() {
+        return this.profileImageSubject.value;
+    }
     userSignIn(
         username: string,
         password: string

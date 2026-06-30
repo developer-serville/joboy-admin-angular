@@ -44,6 +44,7 @@ export class ProfileComponent implements OnInit {
           console.log(profile);
 
           this.profileImage = profile.image;
+          this.profileService.setProfileImage(profile.image);
 
           this.profileForm.patchValue({
             firstname: profile.firstname,
