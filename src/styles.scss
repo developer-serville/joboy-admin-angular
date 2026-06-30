@@ -4,10 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* -------------------------------------------------------------------------- */
-/* Global Typography */
-/* -------------------------------------------------------------------------- */
-
 html,
 body {
   height: 100%;
@@ -33,7 +29,6 @@ body,
   font-family: "Inter", sans-serif !important;
 }
 
-/* Headings */
 h1,
 h2,
 h3,
@@ -44,7 +39,6 @@ h6,
   font-family: "Outfit", sans-serif !important;
 }
 
-/* Numbers & IDs */
 .font-mono {
   font-family: "JetBrains Mono", monospace !important;
 }
@@ -86,6 +80,7 @@ h6,
 .success-snackbar {
   --mdc-snackbar-container-color: #16a34a !important;
   --mat-mdc-snack-bar-button-color: white !important;
+  font-family: "Outfit", sans-serif !important;
 
   color: white !important;
   border-radius: 12px !important;

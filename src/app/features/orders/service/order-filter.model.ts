@@ -6,8 +6,8 @@ export interface OrderFilter {
     customer: string;
     from_date: string;
     to_date: string;
-    city: string;
-    cat_id: string;
+    city: number | null;
+    cat_id: number | null;
     search: string;
     type: string;
 }

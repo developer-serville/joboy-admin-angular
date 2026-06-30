@@ -16,7 +16,7 @@
                 Admin Console
             </h1>
 
-            <p class="mt-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            <p class="font-display mt-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
                 PLATFORM SERVICE BOOKING ADMINISTRATION
             </p>
 
@@ -40,7 +40,8 @@
 
                 <div>
 
-                    <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">
+                    <label
+                        class="font-display block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">
                         Admin Account
                     </label>
 
@@ -51,7 +52,7 @@
                         </span>
 
                         <input type="text" formControlName="username" placeholder="george.jacob@serville.in"
-                            class="w-full h-14 pl-12 pr-4 text-sm font-medium rounded-lg border border-slate-200 bg-slate-50 hover:border-slate-300 focus:bg-white focus:border-blue-500 outline-none transition-all">
+                            class="font-display w-full h-14 pl-12 pr-4 text-sm font-medium rounded-lg border border-slate-200 bg-slate-50 hover:border-slate-300 focus:bg-white focus:border-blue-500 outline-none transition-all">
 
                     </div>
 
@@ -61,11 +62,11 @@
 
                     <div class="flex justify-between mb-2">
 
-                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                        <label class="font-display text-[10px] font-bold uppercase tracking-widest text-slate-500">
                             Security Password
                         </label>
 
-                        <span class="text-xs font-medium text-blue-600 cursor-pointer hover:text-blue-800"
+                        <span class="font-display text-xs font-medium text-blue-600 cursor-pointer hover:text-blue-800"
                             (click)="openForgot()">
 
                             Forgot Password?
@@ -82,7 +83,7 @@
 
                         <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
                             placeholder="••••••••"
-                            class="w-full h-14 pl-12 pr-12 text-sm font-medium rounded-lg border border-slate-200 bg-slate-50 hover:border-slate-300 focus:bg-white focus:border-blue-500 outline-none transition-all">
+                            class="font-display w-full h-14 pl-12 pr-12 text-sm font-medium rounded-lg border border-slate-200 bg-slate-50 hover:border-slate-300 focus:bg-white focus:border-blue-500 outline-none transition-all">
 
                         <button type="button" (click)="togglePassword()"
                             class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
@@ -98,7 +99,7 @@
                 </div>
 
                 <button type="submit" [disabled]="loading"
-                    class="w-full py-3 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition">
+                    class="font-display w-full py-3 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition">
 
                     {{
                     loading
@@ -128,7 +129,7 @@
 
         </div>
 
-        <p class="text-center text-xs text-slate-400">
+        <p class="font-display text-center text-xs text-slate-400">
             Joboy Home Services Tech Admin Platform · Secure AES-256 Vault
         </p>
 

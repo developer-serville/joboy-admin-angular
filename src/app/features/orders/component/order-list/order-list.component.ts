@@ -1,8 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { Order } from '../../models/order-list,model';
+import { WebSocketService } from '../../../../core/services/websocket.service';
+import { CustomerList } from '../../models/customer-list';
+import { OrderCityList } from '../../models/order-city-list';
+import { Order } from '../../models/order-list.model';
+import { OrderServiceList } from '../../models/order-service-list.model';
+import { OrderStatus } from '../../models/order-status.model';
 import { OrderFilter } from '../../service/order-filter.model';
 import { OrderService } from '../../service/order.service';
 
@@ -12,13 +17,21 @@ import { OrderService } from '../../service/order.service';
   imports: [CommonModule, FormsModule, MatIconModule],
   styleUrls: ['./order-list.component.scss']
 })
-export class OrderListComponent implements OnInit {
+export class OrderListComponent implements OnInit, OnDestroy {
   loading = false;
   orders: Order[] = [];
   totalRecords = 0;
   totalPages = 0;
   visiblePages: number[] = [];
   readonly Math = Math;
+  expandedOrderId: string | null = null;
+  commentInputs: { [key: number]: string } = {};
+  statusTabs: OrderStatus[] = [];
+  cityList: OrderCityList[] = [];
+  serviceList: OrderServiceList[] = [];
+  customerList: CustomerList[] = [];
+
+  customerSearch = '';
 
   filter: OrderFilter = {
     page: 0,
@@ -28,8 +41,8 @@ export class OrderListComponent implements OnInit {
     customer: '',
     from_date: '',
     to_date: '',
-    city: '',
-    cat_id: '',
+    city: null,
+    cat_id: null,
     search: '',
     type: ''
   };
@@ -85,34 +98,127 @@ export class OrderListComponent implements OnInit {
     }
   ];
 
-  statusTabs = [
-    {
-      title: 'All Statuses',
-      value: ''
-    },
-    {
-      title: 'Pending',
-      value: '0'
-    },
-    {
-      title: 'In Progress',
-      value: '1'
-    },
-    {
-      title: 'Completed',
-      value: '3'
-    },
-    {
-      title: 'Cancelled',
-      value: '6'
-    }
-  ];
   constructor(
-    private orderService: OrderService
+    private orderService: OrderService,
+    private websocketService: WebSocketService
+
   ) { }
 
   ngOnInit(): void {
+    console.log('OrderListComponent ngOnInit');
+
+    const userData = localStorage.getItem('userData');
+
+    if (userData) {
+      const user = JSON.parse(userData);
+
+      if (user?.token) {
+        this.websocketService.connect(user.token);
+      } else {
+        console.error('Token not found in userData');
+      }
+    }
+
+    this.loadStatuses();
+    this.loadCityList();
     this.getOrders();
+  }
+
+  ngOnDestroy(): void {
+    this.websocketService.disconnect();
+  }
+
+  searchCustomer(): void {
+    const keyword = this.customerSearch.trim();
+    if (!keyword) {
+      this.customerList = [];
+      this.filter.customer = '';
+      return;
+    }
+    this.orderService.getCustomerList(keyword).subscribe({
+      next: (customers) => {
+        this.customerList = customers;
+      },
+      error: err => console.error(err)
+    });
+
+  }
+
+  selectCustomer(customer: CustomerList): void {
+    this.customerSearch = customer.label;
+    this.filter.customer = customer.user_id.toString();
+    this.customerList = [];
+
+  }
+
+  loadServiceList(cityId: number): void {
+
+    this.orderService.getServiceList(cityId).subscribe({
+      next: (services) => {
+        this.serviceList = [
+          {
+            id: -1,
+            service: 'All Services'
+          },
+          ...services
+        ];
+      },
+      error: err => console.error(err)
+    });
+
+  }
+
+  onCityChange(): void {
+
+    console.log('Selected city =>', this.filter.city);
+    console.log('Type =>', typeof this.filter.city);
+
+    this.filter.cat_id = null;
+
+    if (this.filter.city == null || this.filter.city === -1) {
+      this.serviceList = [];
+      return;
+    }
+
+    this.loadServiceList(this.filter.city);
+  }
+
+  loadCityList() {
+    this.orderService.getCityList().subscribe({
+      next: (cities) => {
+
+        console.log('Cities:', cities);
+
+        this.cityList = [
+          {
+            city_id: -1,
+            name: 'All City'
+          },
+          ...cities
+        ];
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+  loadStatuses(): void {
+    this.orderService.getOrderStatuses().subscribe({
+      next: (statuses) => {
+        this.statusTabs = [
+          {
+            id: -1,
+            name: 'All Statuses'
+          },
+          ...statuses
+        ];
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+
   }
 
   getOrders(): void {
@@ -162,9 +268,14 @@ export class OrderListComponent implements OnInit {
     this.getOrders();
   }
 
-  searchOrders() {
+  searchOrders(): void {
     this.filter.page = 0;
+    if (!this.filter.customer) {
+      this.customerSearch = '';
+    }
+    console.log('Search Filter =>', this.filter);
     this.getOrders();
+
   }
 
   changeLimit() {
@@ -202,6 +313,46 @@ export class OrderListComponent implements OnInit {
       (this.filter.page * this.filter.limit) + this.orders.length,
       this.totalRecords
     );
+
+  }
+
+  toggleComments(orderNo: string): void {
+    this.expandedOrderId =
+      this.expandedOrderId === orderNo ? null : orderNo;
+  }
+
+  saveComment(order: Order): void {
+
+    const comment = this.commentInputs[order.order_id]?.trim();
+
+    if (!comment) {
+      return;
+    }
+
+    const payload = {
+      order_id: order.order_id,
+      comment: comment
+    };
+
+    this.orderService.addComment(payload).subscribe({
+
+      next: (response: any) => {
+
+        console.log('Comment added successfully', response);
+
+        this.commentInputs[order.order_id] = '';
+
+        this.getOrders();
+
+        this.expandedOrderId = order.order_no;
+
+      },
+
+      error: (err) => {
+        console.error(err);
+      }
+
+    });
 
   }
 }

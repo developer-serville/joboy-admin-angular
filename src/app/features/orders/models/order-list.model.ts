@@ -1,3 +1,13 @@
+export interface OrderNote {
+    order_id: string;
+    activity: string;
+    comments: string;
+    name: string;
+    type_id: number;
+    type: string | null;
+    date: string | null;
+}
+
 export interface Order {
     order_id: number;
     order_no: string;
@@ -14,6 +24,8 @@ export interface Order {
     transaction_status: number;
     working_play_status: number;
     scheduled_date: string;
+
+    note: OrderNote;
 }
 
 export interface OrderListResponse {
