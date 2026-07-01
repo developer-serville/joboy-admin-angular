@@ -1,20 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { WebSocketService } from '../../../../core/services/websocket.service';
+import { ConfirmOrderDialogComponent } from '../../components/confirm-order-dialog/confirm-order-dialog.component';
 import { CustomerList } from '../../models/customer-list';
 import { OrderCityList } from '../../models/order-city-list';
 import { Order } from '../../models/order-list.model';
 import { OrderServiceList } from '../../models/order-service-list.model';
 import { OrderStatus } from '../../models/order-status.model';
+import { ServiceProvider } from '../../models/service-provider-list.';
 import { OrderFilter } from '../../service/order-filter.model';
 import { OrderService } from '../../service/order.service';
 
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
-  imports: [CommonModule, FormsModule, MatIconModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatDialogModule],
   styleUrls: ['./order-list.component.scss']
 })
 export class OrderListComponent implements OnInit, OnDestroy {
@@ -30,6 +33,9 @@ export class OrderListComponent implements OnInit, OnDestroy {
   cityList: OrderCityList[] = [];
   serviceList: OrderServiceList[] = [];
   customerList: CustomerList[] = [];
+  activeActionMenu: string | null = null;
+  providers: ServiceProvider[] = [];
+  selectedProvider: number | null = null;
 
   customerSearch = '';
 
@@ -98,31 +104,111 @@ export class OrderListComponent implements OnInit, OnDestroy {
     }
   ];
 
+  actionMenus = [
+    {
+      title: 'Confirm',
+      subtitle: 'Verify Booking',
+      icon: 'check',
+      color: 'green'
+    },
+    {
+      title: 'Assign',
+      subtitle: 'Set Specialist',
+      icon: 'person_add',
+      color: 'orange'
+    },
+    {
+      title: 'Reassign',
+      subtitle: 'Swap Personnel',
+      icon: 'autorenew',
+      color: 'purple'
+    },
+    {
+      title: 'Reschedule',
+      subtitle: 'Edit Schedule',
+      icon: 'event',
+      color: 'amber'
+    },
+    {
+      title: 'In Progress',
+      subtitle: 'Start Execution',
+      icon: 'schedule',
+      color: 'blue'
+    },
+    {
+      title: 'Pause',
+      subtitle: 'Halt Workflow',
+      icon: 'pause',
+      color: 'red'
+    },
+    {
+      title: 'Resume',
+      subtitle: 'Restart Job',
+      icon: 'play_arrow',
+      color: 'sky'
+    },
+    {
+      title: 'Complete',
+      subtitle: 'Finish Work',
+      icon: 'task_alt',
+      color: 'emerald'
+    },
+    {
+      title: 'Invoiced',
+      subtitle: 'Issue Invoice',
+      icon: 'receipt_long',
+      color: 'violet'
+    },
+    {
+      title: 'Paid',
+      subtitle: 'Settle Payment',
+      icon: 'payments',
+      color: 'pink'
+    },
+    {
+      title: 'Cancel',
+      subtitle: 'Void Booking',
+      icon: 'cancel',
+      color: 'rose'
+    },
+    {
+      title: 'Close',
+      subtitle: 'Archive Ticket',
+      icon: 'lock',
+      color: 'gray'
+    }
+  ];
+
   constructor(
     private orderService: OrderService,
-    private websocketService: WebSocketService
+    private websocketService: WebSocketService,
+    private dialog: MatDialog
 
   ) { }
 
+
   ngOnInit(): void {
-    console.log('OrderListComponent ngOnInit');
+    // const userData = localStorage.getItem('userData');
+    // if (userData) {
+    //   const user = JSON.parse(userData);
 
-    const userData = localStorage.getItem('userData');
+    //   if (user?.token) {
+    //     this.websocketService.connect(user.token);
+    //   } else {
+    //     console.error('Token not found in userData');
+    //   }
+    // }
+    // this.websocketService.messages$.subscribe(message => {
+    //   console.log('Socket Message =>', message);
+    // });
 
-    if (userData) {
-      const user = JSON.parse(userData);
-
-      if (user?.token) {
-        this.websocketService.connect(user.token);
-      } else {
-        console.error('Token not found in userData');
-      }
-    }
 
     this.loadStatuses();
     this.loadCityList();
     this.getOrders();
   }
+
+
 
   ngOnDestroy(): void {
     this.websocketService.disconnect();
@@ -169,10 +255,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
   }
 
   onCityChange(): void {
-
-    console.log('Selected city =>', this.filter.city);
-    console.log('Type =>', typeof this.filter.city);
-
     this.filter.cat_id = null;
 
     if (this.filter.city == null || this.filter.city === -1) {
@@ -186,8 +268,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
   loadCityList() {
     this.orderService.getCityList().subscribe({
       next: (cities) => {
-
-        console.log('Cities:', cities);
 
         this.cityList = [
           {
@@ -353,6 +433,110 @@ export class OrderListComponent implements OnInit, OnDestroy {
       }
 
     });
+
+  }
+
+  toggleActionMenu(orderNo: string): void {
+    this.activeActionMenu =
+      this.activeActionMenu === orderNo ? null : orderNo;
+  }
+
+  closeActionMenu(): void {
+    this.activeActionMenu = null;
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.activeActionMenu = null;
+  }
+
+  openConfirmDialog(order: Order): void {
+
+    this.activeActionMenu = null;
+    console.log(order);
+
+    const dialogRef = this.dialog.open(ConfirmOrderDialogComponent, {
+
+      width: '450px',
+
+      disableClose: true,
+
+      data: {
+        action: 'confirm',
+        order: order
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (!result) {
+        return;
+      }
+
+      this.orderService.confirmOrder(result).subscribe({
+
+        next: () => {
+
+          this.getOrders();
+
+        },
+
+        error: err => {
+
+          console.error(err);
+
+        }
+
+      });
+
+    });
+
+  }
+
+  openAssignDialog(order: Order): void {
+
+    this.activeActionMenu = null;
+
+    this.dialog.open(ConfirmOrderDialogComponent, {
+
+      width: '500px',
+
+      disableClose: true,
+
+      data: {
+        action: 'assign',
+        order: order
+      }
+
+    });
+
+  }
+
+  onActionClick(action: string, order: Order): void {
+
+    switch (action) {
+
+      case 'Confirm':
+        this.openConfirmDialog(order);
+        break;
+
+      case 'Assign':
+        this.openAssignDialog(order);
+        break;
+
+      case 'Reassign':
+        // this.openReassignDialog(order);
+        break;
+
+      case 'Reschedule':
+        // this.openRescheduleDialog(order);
+        break;
+
+      default:
+        console.log(action);
+        break;
+    }
 
   }
 }

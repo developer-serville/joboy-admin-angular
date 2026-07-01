@@ -535,13 +535,104 @@ dark:text-slate-500">
 
                             </td>
 
-                            <td class="px-4 py-5 text-center">
+                            <td class="px-4 py-5 text-center relative">
 
-                                <button class="text-slate-400 hover:text-slate-700 text-xl">
+                                <button (click)="toggleActionMenu(order.order_no); $event.stopPropagation()"
+                                    class="h-10 w-10 rounded-xl hover:bg-slate-100 transition">
 
-                                    ⋮
+                                    <mat-icon>more_vert</mat-icon>
 
                                 </button>
+
+
+                                <div *ngIf="activeActionMenu === order.order_no" class="absolute right-2 top-12 z-50
+               w-[420px]
+               rounded-3xl
+               bg-white
+               border border-slate-200
+               shadow-2xl
+               p-5">
+
+                                    <div class="text-xs font-bold tracking-[2px] uppercase text-slate-400 mb-4">
+
+                                        Oversight & Dispatch Controls
+
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <button *ngFor="let action of actionMenus"
+                                            (click)="onActionClick(action.title, order)"
+                                            class="flex items-center gap-3 rounded-2xl border p-3 transition" [ngClass]="{
+
+'bg-green-50 border-green-200 hover:bg-green-100 text-green-700': action.color==='green',
+
+'bg-orange-50 border-orange-200 hover:bg-orange-100 text-orange-700': action.color==='orange',
+
+'bg-purple-50 border-purple-200 hover:bg-purple-100 text-purple-700': action.color==='purple',
+
+'bg-amber-50 border-amber-200 hover:bg-amber-100 text-amber-700': action.color==='amber',
+
+'bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700': action.color==='blue',
+
+'bg-red-50 border-red-200 hover:bg-red-100 text-red-700': action.color==='red',
+
+'bg-cyan-50 border-cyan-200 hover:bg-cyan-100 text-cyan-700': action.color==='sky',
+
+'bg-emerald-50 border-emerald-200 hover:bg-emerald-100 text-emerald-700': action.color==='emerald',
+
+'bg-violet-50 border-violet-200 hover:bg-violet-100 text-violet-700': action.color==='violet',
+
+'bg-pink-50 border-pink-200 hover:bg-pink-100 text-pink-700': action.color==='pink',
+
+'bg-rose-50 border-rose-200 hover:bg-rose-100 text-rose-700': action.color==='rose',
+
+'bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-700': action.color==='gray'
+
+}">
+
+                                            <mat-icon>{{action.icon}}</mat-icon>
+
+                                            <div class="text-left">
+
+                                                <div class="font-semibold text-sm">
+
+                                                    {{action.title}}
+
+                                                </div>
+
+                                                <div class="text-xs text-slate-500">
+
+                                                    {{action.subtitle}}
+
+                                                </div>
+
+                                            </div>
+
+                                        </button>
+
+                                    </div>
+
+                                    <div class="border-t mt-5 pt-4 space-y-2">
+
+                                        <button class="flex items-center gap-2 text-orange-600 font-semibold">
+
+                                            <mat-icon>admin_panel_settings</mat-icon>
+
+                                            Assign Admin
+
+                                        </button>
+
+                                        <button class="flex items-center gap-2 text-blue-600 font-semibold">
+
+                                            <mat-icon>chat_bubble_outline</mat-icon>
+
+                                            Add/View Comments
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
 
                             </td>
 
@@ -781,7 +872,7 @@ dark:text-slate-500">
 
             </h3>
 
-            <p class="mt-2 text-[15px] text-slate-500 dark:text-slate-400">
+            <p class=" font-display mt-2 text-[15px] text-slate-500 dark:text-slate-400">
 
                 There are no bookings matching your current filters.
 

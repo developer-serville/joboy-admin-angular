@@ -24,7 +24,7 @@ export interface Order {
     transaction_status: number;
     working_play_status: number;
     scheduled_date: string;
-
+    service_id: string;
     note: OrderNote;
 }
 

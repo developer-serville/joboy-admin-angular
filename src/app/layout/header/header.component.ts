@@ -23,16 +23,8 @@ export class HeaderComponent implements OnInit {
       title: 'CLIENT BOOKINGS',
       items: [
         {
-          name: 'Active Tickets Ledger',
+          name: 'Orders',
           route: '/orders'
-        },
-        {
-          name: 'Store Orders Register',
-          route: '/store-orders'
-        },
-        {
-          name: 'Create Manual Booking',
-          route: '/manual-booking'
         }
       ]
     }

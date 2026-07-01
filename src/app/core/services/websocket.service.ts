@@ -32,20 +32,36 @@ export class WebSocketService {
         this.socket = new WebSocket(url);
 
         this.socket.onopen = () => {
-            console.log('🟢 WebSocket Connected');
-            console.log('State:', this.socket.readyState); // Should be 1
+            console.log(' WebSocket Connected');
+            console.log('State:', this.socket.readyState);
+
+            const registerMessage = {
+                type: 'register',
+                clientId: token
+            };
+
+            console.log(' Registering:', registerMessage);
+
+            this.send(registerMessage);
         };
 
         this.socket.onmessage = (event) => {
-            console.log('📩 Message:', event.data);
+            console.log(' Raw Message:', event.data);
+
+            try {
+                const data = JSON.parse(event.data);
+                this.messageSubject.next(data);
+            } catch {
+                this.messageSubject.next(event.data);
+            }
         };
 
         this.socket.onerror = (event) => {
-            console.error('❌ WebSocket Error:', event);
+            console.error(' WebSocket Error:', event);
         };
 
         this.socket.onclose = (event) => {
-            console.log('🔴 WebSocket Closed');
+            console.log(' WebSocket Closed');
             console.log('Code:', event.code);
             console.log('Reason:', event.reason);
             console.log('Was Clean:', event.wasClean);
@@ -53,8 +69,14 @@ export class WebSocketService {
     }
 
     send(data: any): void {
-        if (this.socket.readyState === WebSocket.OPEN) {
+        if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+
+            console.log('📤 Sending:', data);
+
             this.socket.send(JSON.stringify(data));
+
+        } else {
+            console.warn('WebSocket is not connected.');
         }
     }
 

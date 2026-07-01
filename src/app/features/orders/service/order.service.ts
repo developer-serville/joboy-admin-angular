@@ -7,6 +7,7 @@ import { CustomerList } from '../models/customer-list';
 import { OrderCityList } from '../models/order-city-list';
 import { OrderServiceList } from '../models/order-service-list.model';
 import { OrderStatus } from '../models/order-status.model';
+import { ServiceProvider } from '../models/service-provider-list.';
 import { OrderFilter } from './order-filter.model';
 
 @Injectable({
@@ -103,6 +104,44 @@ export class OrderService extends BaseHttpService {
             .pipe(
                 map(response =>
                     this.responseHandlerService.validateResponse<CustomerList[]>(
+                        response,
+                        false
+                    ) ?? []
+                )
+            );
+
+    }
+
+    confirmOrder(data: {
+        order_id: number;
+        confirm_reason: string;
+    }): Observable<any> {
+
+        return this.httpClient
+            .post<HttpResponseModel<any>>(
+                `${this.baseUrl}order/confirm`,
+                data
+            )
+            .pipe(
+                map(response =>
+                    this.responseHandlerService.validateResponse(response)
+                )
+            );
+
+    }
+
+    getServiceProviderList(service_id: string): Observable<ServiceProvider[]> {
+
+        return this.httpClient
+            .post<HttpResponseModel<ServiceProvider[]>>(
+                `${this.baseUrl}order/getprovidersforassign`,
+                {
+                    service_id: service_id
+                }
+            )
+            .pipe(
+                map(response =>
+                    this.responseHandlerService.validateResponse<ServiceProvider[]>(
                         response,
                         false
                     ) ?? []
