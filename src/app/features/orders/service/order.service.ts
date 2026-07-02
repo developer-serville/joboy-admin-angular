@@ -149,4 +149,92 @@ export class OrderService extends BaseHttpService {
             );
 
     }
+
+    assignOrder(data: {
+        order_req_id: number;
+        joboy_id: number;
+        assign_status: number;
+        description: string;
+    }): Observable<any> {
+
+        return this.httpClient
+            .post<HttpResponseModel<any>>(
+                `${this.baseUrl}order/assign`,
+                data
+            )
+            .pipe(
+                map(response =>
+                    this.responseHandlerService.validateResponse(response)
+                )
+            );
+
+    }
+
+    startInProgress(data: {
+        order_req_id: number;
+    }): Observable<any> {
+
+        return this.httpClient
+            .post<HttpResponseModel<any>>(
+                `${this.baseUrl}order/inprogress`,
+                data
+            )
+            .pipe(
+                map(response =>
+                    this.responseHandlerService.validateResponse(response)
+                )
+            );
+
+    }
+
+    pauseWork(data: {
+        order_req_id: number;
+    }): Observable<any> {
+
+        return this.httpClient
+            .post<HttpResponseModel<any>>(
+                `${this.baseUrl}order/pause`,
+                data
+            )
+            .pipe(
+                map(response =>
+                    this.responseHandlerService.validateResponse(response)
+                )
+            );
+
+    }
+
+    resumeWork(data: {
+        order_req_id: number;
+    }): Observable<any> {
+
+        return this.httpClient
+            .post<HttpResponseModel<any>>(
+                `${this.baseUrl}order/resume`,
+                data
+            )
+            .pipe(
+                map(response =>
+                    this.responseHandlerService.validateResponse(response)
+                )
+            );
+
+    }
+
+    completeWork(data: {
+        order_req_id: number;
+    }): Observable<any> {
+
+        return this.httpClient
+            .post<HttpResponseModel<any>>(
+                `${this.baseUrl}order/complete`,
+                data
+            )
+            .pipe(
+                map(response =>
+                    this.responseHandlerService.validateResponse(response)
+                )
+            );
+
+    }
 }

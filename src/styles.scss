@@ -133,3 +133,8 @@ h6,
       focus:ring-blue-500/20;
   }
 }
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 12px !important;
+  padding: 0 !important;
+  overflow: hidden;
+}

@@ -58,19 +58,32 @@ export class ConfirmOrderDialogComponent implements OnInit {
     if (this.data.action === 'assign') {
 
       this.dialogRef.close({
-        order_id: this.data.order.order_id,
-        service_id: this.selectedProvider,
-        comment: this.confirmReason
+
+        action: 'assign',
+
+        order_req_id: this.data.order.order_id,
+
+        joboy_id: this.selectedProvider,
+
+        assign_status: 4,
+
+        description: this.confirmReason
+
       });
 
-    } else {
-
-      this.dialogRef.close({
-        order_id: this.data.order.order_id,
-        confirm_reason: this.confirmReason
-      });
+      return;
 
     }
+
+    this.dialogRef.close({
+
+      action: 'confirm',
+
+      order_id: this.data.order.order_id,
+
+      confirm_reason: this.confirmReason
+
+    });
 
   }
 }

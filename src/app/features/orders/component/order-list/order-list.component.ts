@@ -234,7 +234,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
     this.customerSearch = customer.label;
     this.filter.customer = customer.user_id.toString();
     this.customerList = [];
-
   }
 
   loadServiceList(cityId: number): void {
@@ -256,7 +255,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   onCityChange(): void {
     this.filter.cat_id = null;
-
     if (this.filter.city == null || this.filter.city === -1) {
       this.serviceList = [];
       return;
@@ -402,30 +400,20 @@ export class OrderListComponent implements OnInit, OnDestroy {
   }
 
   saveComment(order: Order): void {
-
     const comment = this.commentInputs[order.order_id]?.trim();
-
     if (!comment) {
       return;
     }
-
     const payload = {
       order_id: order.order_id,
       comment: comment
     };
-
     this.orderService.addComment(payload).subscribe({
-
       next: (response: any) => {
-
         console.log('Comment added successfully', response);
-
         this.commentInputs[order.order_id] = '';
-
         this.getOrders();
-
         this.expandedOrderId = order.order_no;
-
       },
 
       error: (err) => {
@@ -451,41 +439,27 @@ export class OrderListComponent implements OnInit, OnDestroy {
   }
 
   openConfirmDialog(order: Order): void {
-
     this.activeActionMenu = null;
-    console.log(order);
-
     const dialogRef = this.dialog.open(ConfirmOrderDialogComponent, {
-
       width: '450px',
-
       disableClose: true,
-
       data: {
         action: 'confirm',
         order: order
       }
-
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
       if (!result) {
         return;
       }
-
       this.orderService.confirmOrder(result).subscribe({
-
         next: () => {
-
           this.getOrders();
-
         },
 
         error: err => {
-
           console.error(err);
-
         }
 
       });
@@ -495,20 +469,28 @@ export class OrderListComponent implements OnInit, OnDestroy {
   }
 
   openAssignDialog(order: Order): void {
-
     this.activeActionMenu = null;
-
-    this.dialog.open(ConfirmOrderDialogComponent, {
-
+    const dialogRef = this.dialog.open(ConfirmOrderDialogComponent, {
       width: '500px',
-
       disableClose: true,
-
       data: {
         action: 'assign',
         order: order
       }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.orderService.assignOrder(result).subscribe({
+        next: () => {
+          this.getOrders();
+        },
+        error: err => {
+          console.error(err);
+        }
+      });
     });
 
   }
@@ -529,6 +511,22 @@ export class OrderListComponent implements OnInit, OnDestroy {
         // this.openReassignDialog(order);
         break;
 
+      case 'In Progress':
+        this.startInProgress(order);
+        break;
+
+      case 'Pause':
+        this.pauseWork(order);
+        break;
+
+      case 'Resume':
+        this.resumeWork(order);
+        break;
+
+      case 'Complete':
+        this.completeWork(order);
+        break;
+
       case 'Reschedule':
         // this.openRescheduleDialog(order);
         break;
@@ -537,6 +535,102 @@ export class OrderListComponent implements OnInit, OnDestroy {
         console.log(action);
         break;
     }
+
+  }
+
+  startInProgress(order: Order): void {
+    this.activeActionMenu = null;
+    const confirmed = window.confirm(
+      `Are you sure you want to start the order #${order.order_no}?`
+    );
+    if (!confirmed) {
+      return;
+    }
+    const payload = {
+      order_req_id: order.order_id
+    };
+    this.orderService.startInProgress(payload).subscribe({
+      next: () => {
+        this.getOrders();
+      },
+      error: err => {
+        console.error(err);
+
+      }
+
+    });
+
+  }
+
+  pauseWork(order: Order): void {
+    this.activeActionMenu = null;
+    const confirmed = window.confirm(
+      `Are you sure you want to pause the work #${order.order_no}?`
+    );
+    if (!confirmed) {
+      return;
+    }
+    const payload = {
+      order_req_id: order.order_id
+    };
+    this.orderService.pauseWork(payload).subscribe({
+      next: () => {
+        this.getOrders();
+      },
+      error: err => {
+        console.error(err);
+
+      }
+
+    });
+
+  }
+
+  resumeWork(order: Order): void {
+    this.activeActionMenu = null;
+    const confirmed = window.confirm(
+      `Are you sure you want to resume the work #${order.order_no}?`
+    );
+    if (!confirmed) {
+      return;
+    }
+    const payload = {
+      order_req_id: order.order_id
+    };
+    this.orderService.resumeWork(payload).subscribe({
+      next: () => {
+        this.getOrders();
+      },
+      error: err => {
+        console.error(err);
+
+      }
+
+    });
+
+  }
+
+  completeWork(order: Order): void {
+    this.activeActionMenu = null;
+    const confirmed = window.confirm(
+      `Are you sure you want to complete the work #${order.order_no}?`
+    );
+    if (!confirmed) {
+      return;
+    }
+    const payload = {
+      order_req_id: order.order_id
+    };
+    this.orderService.completeWork(payload).subscribe({
+      next: () => {
+        this.getOrders();
+      },
+      error: err => {
+        console.error(err);
+
+      }
+
+    });
 
   }
 }
